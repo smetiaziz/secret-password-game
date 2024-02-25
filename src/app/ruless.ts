@@ -9,17 +9,30 @@ export const ruless: Rule[] = [
       description: 'Your password must include a number.',
       validate: (password: string) => /\d/.test(password)
     },
+   
     {
       description: 'Your password must include an uppercase letter.',
       validate: (password: string) => /[A-Z]/.test(password)
     },
     {
-      description: 'Your password must include "aziz".',
-      validate: (password: string) => password.includes('aziz')
+      description: 'Your password must include my name.',
+      validate: (password: string) => password.includes('smetiaziz')
     },
     {
-      description: 'Your password must include "smeti".',
-      validate: (password: string) => password.includes('smeti')
+      description: 'Your password must include the fastest land animal.',
+      validate: (password: string) => password.includes('cheetah')
+    },
+    {
+      description: 'Your password must include a Roman numeral.',
+      validate: (password: string) => /[IVXLCDM]+/i.test(password)
+    },
+    {
+      description: 'Your password must include the biggest country.',
+      validate: (password: string) => password.includes('Russia')
+    },
+    {
+      description: 'Your password must include the  longest word in english.',
+      validate: (password: string) => password.includes('pneumonoultramicroscopicsilicovolcanoconiosis')
     },
     {
     description: 'The digits in your password must add up to 25.',
@@ -39,6 +52,53 @@ export const ruless: Rule[] = [
       ];
       return months.some(month => password.includes(month));
     }
+    },
+    {
+      description: 'Your password must include one of the best Premier League teams.',
+      validate: (password: string) => {
+      const teams = [
+      'Manu united', 'Man city', 'Arsenal', 'Chelsea', 'Tottenham', 'Liverpool'
+      ];
+      return teams.some(team => password.includes(team));
     }
+    },
+    {
+      description: 'The Roman numerals in your password should multiply to 35.',
+      validate: (password: string) => {
+        // Function to convert Roman numeral to numeric value
+        const romanToDecimal = (numeral: string): number => {
+          const numerals: { [key: string]: number } = {
+            I: 1,
+            V: 5,
+            X: 10,
+            L: 50,
+            C: 100,
+            D: 500,
+            M: 1000
+          };
+          let result = 0;
+          let prevValue = 0;
+          for (let i = numeral.length - 1; i >= 0; i--) {
+            const currentValue = numerals[numeral[i]];
+            if (currentValue < prevValue) {
+              result -= currentValue;
+            } else {
+              result += currentValue;
+            }
+            prevValue = currentValue;
+          }
+          return result;
+        };
+    
+        // Find Roman numerals in password and calculate their product
+        const numerals = password.match(/[IVXLCDM]+/gi);
+        if (numerals) {
+          const product = numerals.reduce((acc, numeral) => acc * romanToDecimal(numeral), 1);
+          return product === 35;
+        }
+        return false; // Return false if no Roman numerals found
+      }
+    }
+    
     // Add more rules as needed...
   ];
